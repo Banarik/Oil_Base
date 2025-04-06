@@ -69,5 +69,6 @@ public class Button_script : MonoBehaviour
             Debug.LogError("Некорректный ввод! Введите число.");
         }
             Debug.Log(inputField.text);
+        // hello world from git wobuck hehehehe
     }
 }
