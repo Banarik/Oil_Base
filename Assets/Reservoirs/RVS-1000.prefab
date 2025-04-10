@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4796308237580848431}
   - component: {fileID: 2884625682992281055}
   - component: {fileID: 5029512250587113245}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: RVS-1000
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,12 +97,12 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2

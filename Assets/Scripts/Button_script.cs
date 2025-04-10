@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class Button_script : MonoBehaviour
 {
@@ -22,33 +23,53 @@ public class Button_script : MonoBehaviour
     public int x;
     public int y;
     public Transform[] original;
-    public Transform[] mask;
+    public GameObject[] mask;
     public Transform original_tmp;
     public Transform mask_tmp;
     private Vector3 curPos;
-    public int id = 0;
+    public int id;
     private bool is_on;
+    public GameObject original_model;
 
-    private class ObjectPlacer
+    
+    
+    public void SetMask()
     {
-        public static void SetMask(int id, Transform[] original, Transform original_tmp)
+        foreach (Transform obj in original)
         {
-            foreach(Transform obj in original)
+            string name = obj.name.Split(new char[] { '_' }, StringSplitOptions.RemoveEmptyEntries)[0];
+            if (id.ToString() == name)
             {
-                string name = obj.name.Split(new char[] { '_' }, StringSplitOptions.RemoveEmptyEntries)[0];  
-                if (id.ToString() == name)
-                {
-                    original_tmp = Instantiate(obj);
-                    original_tmp.gameObject.SetActive(false);
-                }
+                mask_tmp = Instantiate(obj);
+                mask_tmp.gameObject.SetActive(false);
+                original_tmp.gameObject.SetActive(false);
             }
         }
-    };
-
+    }
+    
     public void resbutton_click()
     {
+        string namebutton = EventSystem.current.currentSelectedGameObject.name;
+        Debug.Log("knopka" + namebutton);
+        switch(namebutton)
+        {
+            case "Resbutt_0":
+                id = 0;
+                break;
+            case "Resbutt_1":
+                id = 1;
+                break;
+            case "Resbutt_2":
+                id = 2;
+                break;
+            case "Resbutt_3":
+                id = 3;
+                break;
+        }
         is_on = true;
-        ObjectPlacer.SetMask(id, original, original_tmp);
+        SetMask();
+        Debug.Log("Pressed");
+        mask_tmp = Instantiate(original[id]);
     }
     public void button_entry_pressed()
     {
@@ -71,23 +92,17 @@ public class Button_script : MonoBehaviour
 
                 if (number != 0)
                 {
-                    //Label1.Text = Label1.Text + "Количество резервуаров " + Variables.names[i] + " равно " + number
-                    //+ "\n";
                     Button[] resbutts = new Button[4];
                     resbutts[i] = Instantiate(buttonPrefab, parentPanel);
                     Debug.Log("i = " + i);
                     resbutts[i].GetComponent<RectTransform>().localPosition = new Vector2(old_x + 100,y);
                     old_x += 100;
                     Variables.numbers[i] = number;
-                    resbutts[i].GetComponentInChildren<TextMeshProUGUI>().text = Variables.names[i] + "(" + Variables.numbers[i] + ")"; ;
-                    //resbutts[i].GetComponent<RectTransform>().anchorMax = new Vector2(0f,1f);
+                    resbutts[i].GetComponentInChildren<TextMeshProUGUI>().text = Variables.names[i] + "(" + Variables.numbers[i] + ")";
                     Debug.Log("Number of Reservoirs" + Variables.names[i] + " is " + number + "\n");
-                    //res.init(Elgrid, Variables.radiuses[i], number, place, Variables.names[i] );
-                    //place++;
-                    for (int b = 0; b<=resbutts.Length; i++)
-                    {
-                        resbutts[i].onClick.AddListener(resbutton_click);
-                    }
+                    resbutts[i].transform.name = "Resbutt_" + i;
+                    resbutts[i].onClick.AddListener(resbutton_click) ;
+                   
                 }
             }
         }
@@ -95,28 +110,32 @@ public class Button_script : MonoBehaviour
         {
             Debug.LogError("Некорректный ввод! Введите число.");
         }
-            Debug.Log(inputField.text);
+            Debug.Log(inputText);
     }
+    
     void Update()
     {
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        
         if (Physics.Raycast(ray, out hit))
         {
-            curPos = hit.point + hit.normal;
+            curPos = hit.point;
         }
 
-        if(mask_tmp)
+        if (mask_tmp)
         {
             mask_tmp.position = curPos;
 
             if (Input.GetMouseButtonDown(0) && is_on)
             {
+                original_tmp = Instantiate(original[id]);
                 original_tmp.gameObject.SetActive(true);
                 original_tmp.position = mask_tmp.position;
                 original_tmp.localEulerAngles = mask_tmp.localEulerAngles;
                 original_tmp = null;
                 Destroy(mask_tmp.gameObject);
+
             }
             else if(Input.GetMouseButtonDown(1))
             {
