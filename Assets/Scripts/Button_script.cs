@@ -21,6 +21,8 @@ public class Button_script : MonoBehaviour
     public Transform parentPanel;
     public int x;
     public int y;
+    public Transform[] original;
+    public Transform[] mask;
 
     private void object_placer()
     {
