@@ -319,6 +319,16 @@ MonoBehaviour:
   parentPanel: {fileID: 386012900}
   x: -330
   y: -170
+  original:
+  - {fileID: 5104678194813245675, guid: 76dd28321fede21459b3c1615e44202c, type: 3}
+  - {fileID: 275689039822694092, guid: d659984d8eb3cc44a9b952b676c0a0a9, type: 3}
+  - {fileID: 295360768237592452, guid: d4cc0a325efabd44181284eea609b678, type: 3}
+  - {fileID: 2540793964979703398, guid: a3329d7e9e1c873418af1c03f324659c, type: 3}
+  mask: []
+  original_tmp: {fileID: 0}
+  mask_tmp: {fileID: 0}
+  id: 0
+  original_model: {fileID: 0}
 --- !u!1 &673711796
 GameObject:
   m_ObjectHideFlags: 0

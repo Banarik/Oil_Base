@@ -51,21 +51,36 @@ public class Button_script : MonoBehaviour
     {
         string namebutton = EventSystem.current.currentSelectedGameObject.name;
         Debug.Log("knopka" + namebutton);
+        int i = 0;
         switch(namebutton)
         {
             case "Resbutt_0":
                 id = 0;
+                i = 0;
                 break;
             case "Resbutt_1":
                 id = 1;
+                i = 1;
                 break;
             case "Resbutt_2":
                 id = 2;
+                i = 2;
                 break;
             case "Resbutt_3":
                 id = 3;
+                i = 3;
                 break;
         }
+        Variables.numbers[i]--;
+        if (Variables.numbers[i] == 0)
+        {
+            Destroy(GameObject.Find(namebutton));
+        }
+        else
+        {
+            GameObject.Find(namebutton).GetComponentInChildren<TextMeshProUGUI>().text = Variables.names[i] + "(" + Variables.numbers[i] + ")";
+        }
+            
         is_on = true;
         SetMask();
         Debug.Log("Pressed");
@@ -89,6 +104,7 @@ public class Button_script : MonoBehaviour
                 {
                     number++;
                 }
+                Variables.numbers[i] = number;
 
                 if (number != 0)
                 {
