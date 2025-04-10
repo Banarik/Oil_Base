@@ -23,11 +23,25 @@ public class Button_script : MonoBehaviour
     public int y;
     public Transform[] original;
     public Transform[] mask;
+    private Transform mask_tmp;
+    private Vector3 curPos;
 
-    private void object_placer()
+    private class ObjectPlacer
     {
+        private void SetMask(int id)
+        {
+            foreach(Transform obj in original)
+            {
+                string name = obj.name.Split(new char[]('_'), StrinSplitOptions.RemoveEmptyEntries)[0];  
+                if (if.ToString() == name)
+                {
+                    original_tmp = Instantiate(obj);
+                    original_tmp.gameObject.SetActive(false);
+                }
+            }
+        }
+    };
 
-    }
 
     public void button_entry_pressed()
     {
