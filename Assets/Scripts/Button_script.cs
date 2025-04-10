@@ -26,10 +26,12 @@ public class Button_script : MonoBehaviour
     public Transform original_tmp;
     public Transform mask_tmp;
     private Vector3 curPos;
+    public int id = 0;
+    private bool is_on;
 
     private class ObjectPlacer
     {
-        private void SetMask(int id, Transform[] original, Transform original_tmp)
+        public static void SetMask(int id, Transform[] original, Transform original_tmp)
         {
             foreach(Transform obj in original)
             {
@@ -43,7 +45,11 @@ public class Button_script : MonoBehaviour
         }
     };
 
-
+    public void resbutton_click()
+    {
+        is_on = true;
+        ObjectPlacer.SetMask(id, original, original_tmp);
+    }
     public void button_entry_pressed()
     {
         Destroy(GameObject.Find("enter_button"));
@@ -78,6 +84,10 @@ public class Button_script : MonoBehaviour
                     Debug.Log("Number of Reservoirs" + Variables.names[i] + " is " + number + "\n");
                     //res.init(Elgrid, Variables.radiuses[i], number, place, Variables.names[i] );
                     //place++;
+                    for (int b = 0; b<=resbutts.Length; i++)
+                    {
+                        resbutts[i].onClick.AddListener(resbutton_click);
+                    }
                 }
             }
         }
@@ -86,5 +96,33 @@ public class Button_script : MonoBehaviour
             Debug.LogError("Некорректный ввод! Введите число.");
         }
             Debug.Log(inputField.text);
+    }
+    void Update()
+    {
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit))
+        {
+            curPos = hit.point + hit.normal;
+        }
+
+        if(mask_tmp)
+        {
+            mask_tmp.position = curPos;
+
+            if (Input.GetMouseButtonDown(0) && is_on)
+            {
+                original_tmp.gameObject.SetActive(true);
+                original_tmp.position = mask_tmp.position;
+                original_tmp.localEulerAngles = mask_tmp.localEulerAngles;
+                original_tmp = null;
+                Destroy(mask_tmp.gameObject);
+            }
+            else if(Input.GetMouseButtonDown(1))
+            {
+                Destroy(original_tmp.gameObject );
+                Destroy(mask_tmp.gameObject) ;
+            }
+        }
     }
 }
